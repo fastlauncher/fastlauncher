@@ -1,4 +1,4 @@
-package model
+package config
 
 type Config struct {
 	Title       string `json:"title"`

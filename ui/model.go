@@ -2,6 +2,7 @@ package ui
 
 import (
 	"fast-launcher/app"
+	"fast-launcher/config"
 	"fmt"
 	"os"
 
@@ -68,15 +69,15 @@ func (m model) View() string {
 	return docStyle.Render(m.list.View())
 }
 
-func StartUi() {
-	items := []list.Item{
-		item{title: "Mozilla Firefox", desc: "web browser", command: "firefox"},
-		item{title: "DBGate", desc: "Database IDE", command: "flatpak run org.dbgate.DbGate"},
-		item{title: "Telegram", desc: "Telegram Desktop", command: "flatpak run org.telegram.desktop"},
-		item{title: "Nemo", desc: "File manager", command: "nemo"},
-		item{title: "Project: FastLauncher", desc: "Project: FastLauncher", command: "alacritty --working-directory ~/work/opensource/fast-launcher"},
-		item{title: "Obsidian", desc: "Obsidian", command: "flatpak run md.obsidian.Obsidian"},
-		item{title: "Kate", desc: "text editor", command: "kate"},
+func StartUi(configCommand []config.Config) {
+	items := []list.Item{}
+
+	for _, cc := range configCommand {
+		items = append(items, item{
+			title:   cc.Title,
+			desc:    cc.Description,
+			command: cc.Command,
+		})
 	}
 
 	// listModel := list.NewDefaultDelegate()

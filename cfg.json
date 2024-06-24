@@ -1,0 +1,63 @@
+[
+
+	{
+		"title": "Mozilla Firefox",
+		"description": "web browser",
+		"command": "firefox"
+	},
+	{
+		"title": "Mozilla Firefox Private",
+		"description": "Private window",
+		"command": "firefox --private-window"
+	},
+	{
+		"title": "DBGate",
+		"description": "Database IDE",
+		"command": "flatpak run org.dbgate.DbGate"
+	},
+	{
+		"title": "Telegram",
+		"description": "Telegram Desktop",
+		"command": "flatpak run org.telegram.desktop"
+	},
+	{
+		"title": "Nemo",
+		"description": "File manager",
+		"command": "nemo"
+	},
+	{
+		"title": "Project: FastLauncher",
+		"description": "Project: FastLauncher",
+		"command": "alacritty --working-directory ~/work/opensource/fast-launcher"
+	},
+	{
+		"title": "Project: FunnyVideo",
+		"description": "Project: FunnyVideo",
+		"command": "alacritty --working-directory ~/work/opensource/funny_video"
+	},
+	{
+		"title": "SSH: Mac",
+		"description": "Connect to Macbook Air",
+		"command": "alacritty -e ssh sergey@192.168.1.49"
+	},
+	{
+		"title": "Obsidian",
+		"description": "Obsidian",
+		"command": "flatpak run md.obsidian.Obsidian"
+	},
+	{
+		"title": "KWrite",
+		"description": "text editor",
+		"command": "flatpak run org.kde.kwrite"
+	},
+	{
+		"title": "Krita",
+		"description": "Digital painting",
+		"command": "flatpak run org.kde.krita"
+	},
+	{
+		"title": "Kate",
+		"description": "text editor",
+		"command": "kate"
+	}
+]

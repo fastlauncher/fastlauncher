@@ -83,7 +83,10 @@ func StartUi(configCommand []config.Config) {
 	// listModel := list.NewDefaultDelegate()
 
 	m := model{list: list.New(items, list.NewDefaultDelegate(), 0, 0)}
-	m.list.Title = "My Fave Things"
+	m.list.Title = "FastLauncher"
+	m.list.SetShowHelp(false)
+	m.list.SetShowTitle(true)
+	m.list.SetShowStatusBar(false)
 	keyMap := KeyMap{}
 	m.list.KeyMap = keyMap.Get()
 

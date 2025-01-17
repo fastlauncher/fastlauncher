@@ -12,7 +12,7 @@ func TestParseFromString(t *testing.T) {
 	body := `
 [Desktop Entry]
 Type=Application
-Exec=foot
+Exec=3foot
 Icon=foot
 Terminal=false
 Categories=System;TerminalEmulator;

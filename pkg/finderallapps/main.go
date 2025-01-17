@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/probeldev/fastlauncher/pkg/finderallapps/finder"
+	"github.com/probeldev/fastlauncher/pkg/finderallapps/model"
 )
 
 const (
@@ -13,7 +14,7 @@ const (
 )
 
 type FinderInterface interface {
-	GetAllApp() ([]string, error)
+	GetAllApp() ([]model.App, error)
 }
 
 func GetFinder(operatingSystem string) (FinderInterface, error) {

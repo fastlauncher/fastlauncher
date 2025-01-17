@@ -4,6 +4,9 @@ import (
 	"errors"
 	"os"
 	"strings"
+
+	"github.com/probeldev/fastlauncher/pkg/finderallapps/model"
+	"github.com/probeldev/fastlauncher/pkg/parsedesktopfile"
 )
 
 type linuxFinder struct{}
@@ -14,24 +17,50 @@ func GetLinuxFinder() linuxFinder {
 	return f
 }
 
-func (lf *linuxFinder) GetAllApp() ([]string, error) {
+func (lf *linuxFinder) GetAllApp() ([]model.App, error) {
+	apps := []model.App{}
 
 	foldersApps := []string{
 		"/usr/share/applications/",
 	}
 
 	for _, folder := range foldersApps {
-		lf.getFromFolder(folder)
+		appsFromFolder, err := lf.getFromFolder(folder)
+		if err != nil {
+			return apps, nil
+		}
+
+		apps = append(apps, appsFromFolder...)
 	}
 
-	// TODO:
-
-	return []string{}, errors.New("Linux is not suport")
+	return apps, errors.New("Linux is not suport")
 }
 
-func (lf *linuxFinder) getFromFolder(folder string) ([]string, error) {
-	// TODO
-	return []string{}, nil
+func (lf *linuxFinder) getFromFolder(folder string) ([]model.App, error) {
+
+	files, err := lf.getAllDesktopListFromFolder(folder)
+	if err != nil {
+		return nil, err
+	}
+
+	apps := make([]model.App, len(files))
+
+	parser := parsedesktopfile.GetParseDesktopFile()
+	for _, file := range files {
+		desktop, err := parser.ParseFromFile(file)
+		if err != nil {
+			return apps, err
+		}
+
+		apps = append(apps, model.App{
+			Name:        desktop.Name,
+			Command:     desktop.Exec,
+			Description: desktop.Comment,
+			Keywords:    desktop.Keywords,
+		})
+	}
+
+	return apps, nil
 }
 
 func (lf *linuxFinder) getAllDesktopListFromFolder(folder string) (

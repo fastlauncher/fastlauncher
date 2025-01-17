@@ -1,6 +1,10 @@
 package finder
 
-import "errors"
+import (
+	"errors"
+
+	"github.com/probeldev/fastlauncher/pkg/finderallapps/model"
+)
 
 type windowsFinder struct{}
 
@@ -10,8 +14,9 @@ func GetWindowsFinder() windowsFinder {
 	return f
 }
 
-func (lf *windowsFinder) GetAllApp() ([]string, error) {
+func (lf *windowsFinder) GetAllApp() ([]model.App, error) {
+	apps := []model.App{}
 	// TODO:
 
-	return []string{}, errors.New("Windows is not suport")
+	return apps, errors.New("Windows is not suport")
 }

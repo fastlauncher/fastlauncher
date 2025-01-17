@@ -1,6 +1,10 @@
 package finder
 
-import "errors"
+import (
+	"errors"
+
+	"github.com/probeldev/fastlauncher/pkg/finderallapps/model"
+)
 
 type macOsFinder struct{}
 
@@ -10,8 +14,9 @@ func GetMacOsFinder() macOsFinder {
 	return f
 }
 
-func (mf *macOsFinder) GetAllApp() ([]string, error) {
+func (mf *macOsFinder) GetAllApp() ([]model.App, error) {
+	apps := []model.App{}
 	// TODO:
 
-	return []string{}, errors.New("MacOs is not suport")
+	return apps, errors.New("MacOs is not suport")
 }

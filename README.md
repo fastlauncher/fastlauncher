@@ -13,7 +13,7 @@
 
 Пример файла [cfg.json](https://github.com/probeldev/fastlauncher/blob/main/cfg.json) 
 
-Запуск производится средствами оконного менеджера. Пример hyprland.cfg:
+Запуск производится средствами оконного менеджера. Пример hyprland.cofg:
     
     $terminal = foot
     $menu = $terminal -T fast-launcher fastlauncher --config ~/script/fast-launcher/cfg.json

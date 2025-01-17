@@ -45,6 +45,13 @@ It's launched with the help of window manager. Example hyprland.conf:
     $menu = $terminal -T fast-launcher fastlauncher --config ~/script/fast-launcher/cfg.json
     bind = $mainMod, D, exec, $menu
 
+
+    windowrulev2 = float,title:(fast-launcher)
+    windowrulev2 = pin,title:(fast-launcher)
+    windowrulev2 = size 1000 600,title:(fast-launcher)
+    windowrulev2 = center(1), title:(fast-launcher)
+
+
 ## Hotkeys
 
 h,j,k,l - Navigation

@@ -4,25 +4,25 @@ TUI Application Launcher
 
 ![alt text](https://github.com/probeldev/fastlauncher/blob/main/screenshots/main.png?raw=true)
 
-## Установка
+## Installation
 
     go install github.com/probeldev/fastlauncher@latest     
 
 
-## Использование 
+## Usage 
 
     fastlauncher --config ~/script/fast-launcher/cfg.json
 
-Пример файла [cfg.json](https://github.com/probeldev/fastlauncher/blob/main/cfg.json) 
+Example file [cfg.json](https://github.com/probeldev/fastlauncher/blob/main/cfg.json) 
 
-Запуск производится средствами оконного менеджера. Пример hyprland.cofg:
+It's launched with the help of window manager. Example hyprland.conf:
     
     $terminal = foot
     $menu = $terminal -T fast-launcher fastlauncher --config ~/script/fast-launcher/cfg.json
     bind = $mainMod, D, exec, $menu
 
-## Горячие клавиши
+## Hotkeys
 
-h,j,k,l - Навигация
+h,j,k,l - Navigation
 
-? - Поиск
+? - Search

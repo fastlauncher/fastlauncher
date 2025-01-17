@@ -4,6 +4,14 @@ TUI Application Launcher
 
 ![alt text](https://github.com/probeldev/fastlauncher/blob/main/screenshots/main.png?raw=true)
 
+## Suport OS
+
+Linux - Done
+
+Windows - Work in progress
+
+Mac Os - Work in progress
+
 ## Installation
 
 

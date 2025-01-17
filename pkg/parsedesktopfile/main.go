@@ -15,11 +15,11 @@ func GetParseDesktopFile() parseDesktopFile {
 	return p
 }
 
-func (p *parseDesktopFile) GetFromString(desktop string) model.Desktop {
+func (p *parseDesktopFile) ParseFromString(desktop string) model.Desktop {
 	return p.parse(desktop)
 }
 
-func (p *parseDesktopFile) GetFromFile(desktopFile string) (model.Desktop, error) {
+func (p *parseDesktopFile) ParseFromFile(desktopFile string) (model.Desktop, error) {
 	response := model.Desktop{}
 	body, err := os.ReadFile(desktopFile)
 
@@ -37,6 +37,8 @@ func (p *parseDesktopFile) parse(body string) model.Desktop {
 
 	mapLines := map[string]string{}
 	for _, line := range bodyLines {
+		line = strings.Trim(line, " ")
+		line = strings.Trim(line, "\t")
 		if line == "" {
 			continue
 		}
@@ -49,22 +51,22 @@ func (p *parseDesktopFile) parse(body string) model.Desktop {
 		mapLines[lineArr[0]] = lineArr[1]
 	}
 
-	if exec, ok := mapLines["exec"]; ok {
+	if exec, ok := mapLines["Exec"]; ok {
 		response.Exec = exec
 	}
-	if name, ok := mapLines["name"]; ok {
+	if name, ok := mapLines["Name"]; ok {
 		response.Name = name
 	}
-	if typeDesk, ok := mapLines["type"]; ok {
+	if typeDesk, ok := mapLines["Type"]; ok {
 		response.Type = typeDesk
 	}
-	if comment, ok := mapLines["comment"]; ok {
+	if comment, ok := mapLines["Comment"]; ok {
 		response.Comment = comment
 	}
-	if keywords, ok := mapLines["keywords"]; ok {
+	if keywords, ok := mapLines["Keywords"]; ok {
 		response.Keywords = keywords
 	}
-	if terminal, ok := mapLines["terminal"]; ok {
+	if terminal, ok := mapLines["Terminal"]; ok {
 		response.Terminal = terminal == "true"
 	}
 

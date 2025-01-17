@@ -1,7 +1,6 @@
 package finder
 
 import (
-	"errors"
 	"os"
 	"strings"
 
@@ -27,13 +26,13 @@ func (lf *linuxFinder) GetAllApp() ([]model.App, error) {
 	for _, folder := range foldersApps {
 		appsFromFolder, err := lf.getFromFolder(folder)
 		if err != nil {
-			return apps, nil
+			return apps, err
 		}
 
 		apps = append(apps, appsFromFolder...)
 	}
 
-	return apps, errors.New("Linux is not suport")
+	return apps, nil
 }
 
 func (lf *linuxFinder) getFromFolder(folder string) ([]model.App, error) {
@@ -80,5 +79,5 @@ func (lf *linuxFinder) getAllDesktopListFromFolder(folder string) (
 		}
 	}
 
-	return []string{}, nil
+	return desktopFiles, nil
 }

@@ -8,7 +8,6 @@ import (
 )
 
 func TestParseFromString(t *testing.T) {
-	fn := "TestParseFromString"
 	body := `
 [Desktop Entry]
 Type=Application
@@ -18,7 +17,9 @@ Terminal=false
 Categories=System;TerminalEmulator;
 Keywords=shell;prompt;command;commandline;
 
-Name=Foot
+# comment
+
+Name=ImageMagick (color depth=q16)
 GenericName=Terminal
 Comment=A wayland native terminal emulator
 	`
@@ -29,16 +30,20 @@ Comment=A wayland native terminal emulator
 		Terminal: false,
 		Keywords: "shell;prompt;command;commandline;",
 
-		Name:    "Foot",
+		Name:    "ImageMagick (color depth=q16)",
 		Comment: "A wayland native terminal emulator",
 	}
 
 	parse := parsedesktopfile.GetParseDesktopFile()
 
-	actual := parse.ParseFromString(body)
+	actual, err := parse.ParseFromString(body)
+
+	if err != nil {
+		t.Error(err.Error())
+	}
 
 	if actual != expected {
-		t.Errorf(fn, "not equal", actual, parse)
+		t.Error("not equal", actual, parse)
 	}
 
 }

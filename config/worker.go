@@ -21,12 +21,12 @@ func (cw *ConfigWorker) GetFromFile(cfgPath string) []Config {
 
 	file, err := os.ReadFile(cfgPath)
 	if err != nil {
-		log.Println("Ошибка при чтении файла:", err)
+		log.Println(err)
 		return response
 	}
 
 	if err := json.Unmarshal(file, &response); err != nil {
-		log.Println("Ошибка при десериализации JSON:", err)
+		log.Println(err)
 		return response
 	}
 

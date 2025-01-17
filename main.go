@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 
-	"github.com/probeldev/fastlauncher/config"
+	sourceapps "github.com/probeldev/fastlauncher/sourceApps"
 	"github.com/probeldev/fastlauncher/ui"
 )
 
@@ -12,8 +12,8 @@ func main() {
 	cfgPath := flag.String("config", "", "Path to config file")
 	flag.Parse()
 
-	cw := config.ConfigWorker{}
-	configCommands := cw.GetFromFile(*cfgPath)
+	ca := sourceapps.ConfigSourceApps{}
+	configCommands := ca.GetFromFile(*cfgPath)
 
 	ui.StartUi(configCommands)
 }

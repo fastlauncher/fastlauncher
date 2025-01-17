@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/probeldev/fastlauncher/app"
-	"github.com/probeldev/fastlauncher/config"
+	"github.com/probeldev/fastlauncher/model"
 
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
@@ -26,16 +26,16 @@ func (i item) Description() string { return i.desc }
 func (i item) Command() string     { return i.command }
 func (i item) FilterValue() string { return i.title }
 
-type model struct {
+type modelUi struct {
 	list   list.Model
 	choice string
 }
 
-func (m model) Init() tea.Cmd {
+func (m modelUi) Init() tea.Cmd {
 	return nil
 }
 
-func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (m modelUi) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		if msg.String() == "ctrl+c" ||
@@ -64,27 +64,27 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, cmd
 }
 
-func (m model) View() string {
+func (m modelUi) View() string {
 	if m.choice != "" {
 		return quitTextStyle.Render(fmt.Sprintf("%s? Sounds good to me.", m.choice))
 	}
 	return docStyle.Render(m.list.View())
 }
 
-func StartUi(configCommand []config.Config) {
+func StartUi(apps []model.App) {
 	items := []list.Item{}
 
-	for _, cc := range configCommand {
+	for _, a := range apps {
 		items = append(items, item{
-			title:   cc.Title,
-			desc:    cc.Description,
-			command: cc.Command,
+			title:   a.Title,
+			desc:    a.Description,
+			command: a.Command,
 		})
 	}
 
 	// listModel := list.NewDefaultDelegate()
 
-	m := model{list: list.New(items, list.NewDefaultDelegate(), 0, 0)}
+	m := modelUi{list: list.New(items, list.NewDefaultDelegate(), 0, 0)}
 	m.list.Title = "FastLauncher"
 	m.list.SetShowHelp(false)
 	m.list.SetShowTitle(true)

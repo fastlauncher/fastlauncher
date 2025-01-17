@@ -1,18 +1,18 @@
-package config
+package sourceapps
 
 import (
 	"encoding/json"
 	"os"
 
 	"github.com/probeldev/fastlauncher/log"
+	"github.com/probeldev/fastlauncher/model"
 )
 
-type ConfigWorker struct {
-}
+type ConfigSourceApps struct{}
 
-func (cw *ConfigWorker) GetFromFile(cfgPath string) []Config {
+func (cw *ConfigSourceApps) GetFromFile(cfgPath string) []model.App {
 
-	response := []Config{}
+	response := []model.App{}
 
 	if cfgPath == "" {
 		log.Println("cfg path not found")

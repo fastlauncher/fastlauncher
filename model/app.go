@@ -1,6 +1,6 @@
-package config
+package model
 
-type Config struct {
+type App struct {
 	Title       string `json:"title"`
 	Description string `json:"description"`
 	Command     string `json:"command"`

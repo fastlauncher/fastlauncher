@@ -28,3 +28,5 @@ require (
 	golang.org/x/sys v0.20.0 // indirect
 	golang.org/x/text v0.3.8 // indirect
 )
+
+replace fast-launcher => github.com/probeldev/fastlauncher latest

@@ -1,9 +1,10 @@
 package main
 
 import (
-	"fastlauncher/config"
-	"fastlauncher/ui"
 	"flag"
+
+	"github.com/probeldev/fastlauncher/config"
+	"github.com/probeldev/fastlauncher/ui"
 )
 
 func main() {

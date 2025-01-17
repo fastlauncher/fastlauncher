@@ -1,4 +1,4 @@
-module fastlauncher
+module github.com/probeldev/fastlauncher
 
 go 1.22.3
 

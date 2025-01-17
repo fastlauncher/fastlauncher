@@ -1,10 +1,11 @@
 package ui
 
 import (
-	"fastlauncher/app"
-	"fastlauncher/config"
 	"fmt"
 	"os"
+
+	"github.com/probeldev/fastlauncher/app"
+	"github.com/probeldev/fastlauncher/config"
 
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"

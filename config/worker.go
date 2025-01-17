@@ -2,8 +2,9 @@ package config
 
 import (
 	"encoding/json"
-	"fastlauncher/log"
 	"os"
+
+	"github.com/probeldev/fastlauncher/log"
 )
 
 type ConfigWorker struct {

@@ -14,14 +14,6 @@ func (a *App) Run(command string) error {
 		Setpgid: true,
 	}
 	err := cmd.Start()
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// _, err := exec.Command("bash", "-c", command).Output()
-	// if err != nil {
-	// 	log.Println("BashController:Run", command)
-	// 	log.Println("BashController:Run", err)
-	// }
 
 	return err
 }

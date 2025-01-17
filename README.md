@@ -1,5 +1,7 @@
 # FastLauncher
 
+TUI Application Launcher
+
 ![alt text](https://github.com/probeldev/fastlauncher/blob/main/screenshots/main.png?raw=true)
 
 ## Установка

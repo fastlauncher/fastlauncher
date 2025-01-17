@@ -19,3 +19,8 @@
     $menu = $terminal -T fast-launcher fastlauncher --config ~/script/fast-launcher/cfg.json
     bind = $mainMod, D, exec, $menu
 
+## Горячие клавиши
+
+h,j,k,l - навигация
+
+? - Поиск

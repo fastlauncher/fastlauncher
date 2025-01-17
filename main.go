@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fast-launcher/config"
-	"fast-launcher/ui"
+	"fastlauncher/config"
+	"fastlauncher/ui"
 	"flag"
 )
 

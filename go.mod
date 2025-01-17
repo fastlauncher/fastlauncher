@@ -1,4 +1,4 @@
-module fast-launcher
+module fastlauncher
 
 go 1.22.3
 

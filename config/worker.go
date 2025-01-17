@@ -2,7 +2,7 @@ package config
 
 import (
 	"encoding/json"
-	"fast-launcher/log"
+	"fastlauncher/log"
 	"os"
 )
 

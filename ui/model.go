@@ -1,8 +1,8 @@
 package ui
 
 import (
-	"fast-launcher/app"
-	"fast-launcher/config"
+	"fastlauncher/app"
+	"fastlauncher/config"
 	"fmt"
 	"os"
 

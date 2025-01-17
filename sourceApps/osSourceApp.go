@@ -20,7 +20,7 @@ func (o *OsSourceApp) GetAll() ([]model.App, error) {
 		return nil, err
 	}
 
-	apps := make([]model.App, len(osApps))
+	apps := []model.App{}
 
 	for _, oa := range osApps {
 		apps = append(apps, model.App{

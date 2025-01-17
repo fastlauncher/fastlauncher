@@ -84,10 +84,10 @@ func (p *parseDesktopFile) parse(body string) (
 	}
 
 	if exec, ok := mapLines["Exec"]; ok {
-		response.Exec = exec
+		response.Exec = strings.Trim(exec, " ")
 	}
 	if name, ok := mapLines["Name"]; ok {
-		response.Name = name
+		response.Name = strings.Trim(name, " ")
 	}
 	if typeDesk, ok := mapLines["Type"]; ok {
 		response.Type = typeDesk

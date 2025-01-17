@@ -26,6 +26,7 @@ func main() {
 		// TODO
 		log.Println(err)
 	}
+
 	ui.StartUi(apps)
 
 }

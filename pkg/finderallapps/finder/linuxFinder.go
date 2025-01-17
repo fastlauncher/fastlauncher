@@ -42,13 +42,17 @@ func (lf *linuxFinder) getFromFolder(folder string) ([]model.App, error) {
 		return nil, err
 	}
 
-	apps := make([]model.App, len(files))
+	apps := []model.App{}
 
 	parser := parsedesktopfile.GetParseDesktopFile()
 	for _, file := range files {
 		desktop, err := parser.ParseFromFile(file)
 		if err != nil {
 			return apps, err
+		}
+
+		if desktop.Name == "" || desktop.Exec == "" {
+			continue
 		}
 
 		apps = append(apps, model.App{

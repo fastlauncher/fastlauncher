@@ -14,7 +14,7 @@ Mac Os - Work in progress
 
 ## Installation
 
-[Full guide for Arch Linux with KDE](https://github.com/OrigaSul/fastlauncher/tree/main/guides/arch_kde/readme.md)
+[Full guide for Arch Linux with KDE](https://github.com/probeldev/fastlauncher/tree/main/guides/arch_kde/readme.md)
 
 Installation
 

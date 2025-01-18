@@ -4,7 +4,7 @@ System parameters
 
 <div align="center">
 
-![system_parameters](picforreadme/system_parameters.png)
+![system_parameters](images/system_parameters.png)
 
 </div>
 
@@ -32,7 +32,7 @@ System parameters
 
     <div align="center">
 
-    ![system_parameters](picforreadme/install.png)
+    ![system_parameters](images/install.png)
 
     </div>
 
@@ -98,7 +98,7 @@ System parameters
 
     <div align="center">
 
-    ![system_parameters](picforreadme/flatpaklist.png)
+    ![system_parameters](images/flatpaklist.png)
 
     </div>
 
@@ -111,7 +111,7 @@ Add Shorcuts to call the launcher
 
 <div align="center">
 
-![system_parameters](picforreadme/hotkey.png)
+![system_parameters](images/hotkey.png)
 
 </div>
 
@@ -124,7 +124,7 @@ konsole --fullscreen -e 'bash -c  "~/go/bin/fastlauncher --config ~/script/fast-
 ```
 <div align="center">
 
-![system_parameters](picforreadme/add.png)
+![system_parameters](images/add.png)
 
 </div>
 
@@ -132,13 +132,13 @@ konsole --fullscreen -e 'bash -c  "~/go/bin/fastlauncher --config ~/script/fast-
 
 <div align="center">
 
-![system_parameters](picforreadme/add2.png)
+![system_parameters](images/add2.png)
 
 </div>
 
 <div align="center">
 
-![system_parameters](picforreadme/add3.png)
+![system_parameters](images/add3.png)
 
 </div>
 

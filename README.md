@@ -14,6 +14,7 @@ Mac Os - Work in progress
 
 ## Installation
 
+[Full guide for Arch Linux with KDE](https://github.com/OrigaSul/fastlauncher/tree/main/guides/arch_kde/readme.md)
 
 Installation
 
@@ -57,10 +58,3 @@ It's launched with the help of window manager. Example hyprland.conf:
 h,j,k,l - Navigation
 
 ? - Search
-
-## Linux
-
-
-### for arch 
-
- **Guide (kde) is available [here](https://github.com/OrigaSul/fastlauncher/tree/main/guides/arch_kde/readme.md)**

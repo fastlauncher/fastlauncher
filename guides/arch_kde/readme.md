@@ -1,4 +1,4 @@
-## Instalation for Arch KDE
+## Installation for Arch KDE
 
 System parameters
 
@@ -10,7 +10,7 @@ System parameters
 
 **Video installation guide is available [here](link)**
 
-1. Install Golang. Open terminal(konsole) and insert the following comand:
+1. Install Golang. Open terminal(konsole) and insert the following comand
 
     ```bash
     sudo pacman -S go
@@ -24,7 +24,7 @@ System parameters
       `go version go1.23.4 linux/amd64`
 
 
-2. Install the launcher.
+2. Install the launcher
 
     ```
     go install github.com/probeldev/fastlauncher@latest
@@ -105,7 +105,7 @@ System parameters
     
 ## USAGE
 
- ### with sortcuts
+ ### with shortcuts
 
 Add Shorcuts to call the launcher
 
@@ -159,7 +159,7 @@ fastlauncher --config ~/script/fast-launcher/cfg.json
 
 If you get an error `deserialization json`, repeat step 3. `Creating Your Configuration File` 
 
-## Unistalation
+## Unistallation
 
 ```
 rm ~/go/bin/fastlauncher

@@ -8,7 +8,7 @@ System parameters
 
 </div>
 
-**Video installation guide is available [here](link)**
+<!-- **Video installation guide is available [here](link)** -->
 
 1. Install Golang. Open terminal(konsole) and insert the following comand
 

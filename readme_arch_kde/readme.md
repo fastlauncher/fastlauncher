@@ -1,4 +1,4 @@
-## Instalation for Arch KDE
+## Installation for Arch KDE
 
 System parameters
 
@@ -105,7 +105,7 @@ System parameters
     
 ## USAGE
 
- ### with sortcuts
+ ### with shortcuts
 
 Add Shorcuts to call the launcher
 
@@ -159,7 +159,7 @@ fastlauncher --config ~/script/fast-launcher/cfg.json
 
 If you get an error `deserialization json`, repeat step 3. `Creating Your Configuration File` 
 
-## Unistalation
+## Unistallation
 
 ```
 rm ~/go/bin/fastlauncher

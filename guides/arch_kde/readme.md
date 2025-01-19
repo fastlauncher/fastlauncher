@@ -151,7 +151,7 @@ konsole --fullscreen -e 'bash -c  "~/go/bin/fastlauncher --config ~/script/fast-
 echo "export PATH=\$PATH:~/go/bin" >> ~/.bashrc
 ```
 
-3. Close and reopen the terminal
+2. Close and reopen the terminal
 
 
 ```bash

@@ -10,7 +10,7 @@ System parameters
 
 <!-- **Video installation guide is available [here](link)** -->
 
-1. Install Golang. Open terminal(konsole) and insert the following comand
+1. Install Golang. Open the terminal (Konsole) and insert the following command:
 
     ```bash
     sudo pacman -S go
@@ -117,7 +117,7 @@ Add Shorcuts to call the launcher
 
 1. System settings -> Keyboard -> Shortcuts -> Add New -> Application...
 
-2. Enter in the field and save:
+2. Enter the following in the field and save:
 
 ```
 konsole --fullscreen -e 'bash -c  "~/go/bin/fastlauncher --config ~/script/fast-launcher/cfg.json" '
@@ -144,13 +144,15 @@ konsole --fullscreen -e 'bash -c  "~/go/bin/fastlauncher --config ~/script/fast-
 
 ### with terminal
 
-1. Open terminal
+1. Open the terminal
+
 
 ```bash
 echo "export PATH=\$PATH:~/go/bin" >> ~/.bashrc
 ```
 
-2. Close and open new terminal
+3. Close and reopen the terminal
+
 
 ```bash
 fastlauncher --config ~/script/fast-launcher/cfg.json

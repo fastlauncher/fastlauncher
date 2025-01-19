@@ -1,0 +1,23 @@
+[
+
+	{
+		"title": "Reboot",
+		"description": "Reboot",
+		"command": "systemctl reboot"
+	},
+	{
+		"title": "Logout",
+		"description": "Logout",
+		"command": "loginctl terminate-user $USER"
+	},
+	{
+		"title": "Suspend",
+		"description": "Suspend",
+		"command": "Suspend"
+	},
+	{
+		"title": "Shutdown",
+		"description": "Shutdown",
+		"command": "systemctl poweroff"
+	}
+]

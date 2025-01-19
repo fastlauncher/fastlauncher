@@ -12,6 +12,14 @@ Windows - Work in progress
 
 Mac Os - Work in progress
 
+## Examples
+
+### Logout Manager
+
+[Example config](https://github.com/probeldev/fastlauncher/blob/main/examples/logout-manager/cfg.json) 
+
+![alt text](https://github.com/probeldev/fastlauncher/blob/main/screenshots/logout-manager.png?raw=true)
+
 ## Installation
 
 [Full guide for Arch Linux with KDE](https://github.com/probeldev/fastlauncher/tree/main/guides/arch_kde/readme.md)

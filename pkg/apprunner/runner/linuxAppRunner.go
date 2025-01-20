@@ -1,14 +1,19 @@
-package app
+package runner
 
 import (
 	"os/exec"
 	"syscall"
 )
 
-type App struct {
+type linuxAppRunner struct{}
+
+func GetLinuxAppRunner() linuxAppRunner {
+	f := linuxAppRunner{}
+
+	return f
 }
 
-func (a *App) Run(command string) error {
+func (lr *linuxAppRunner) Run(command string) error {
 	cmd := exec.Command("bash", "-c", command)
 	cmd.SysProcAttr = &syscall.SysProcAttr{
 		Setpgid: true,

@@ -2,10 +2,11 @@ package ui
 
 import (
 	"fmt"
+	"log"
 	"os"
 
-	"github.com/probeldev/fastlauncher/app"
 	"github.com/probeldev/fastlauncher/model"
+	"github.com/probeldev/fastlauncher/pkg/apprunner"
 
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
@@ -48,8 +49,14 @@ func (m modelUi) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				// m.choice = i.Title()
 
 				go func() {
-					app := app.App{}
-					app.Run(i.Command())
+					app, err := apprunner.GetAppRunner(apprunner.OsLinux) // TODO: change
+					if err != nil {
+						log.Println(err)
+					}
+					err = app.Run(i.Command())
+					if err != nil {
+						log.Println(err)
+					}
 				}()
 			}
 			return m, tea.Quit

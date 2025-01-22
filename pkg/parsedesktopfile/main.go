@@ -49,38 +49,9 @@ func (p *parseDesktopFile) parse(body string) (
 ) {
 	response := model.Desktop{}
 
-	bodyLines := strings.Split(body, "\n")
-
-	mapLines := map[string]string{}
-	for _, line := range bodyLines {
-		line = strings.Trim(line, " ")
-		line = strings.Trim(line, "\t")
-		if line == "" {
-			continue
-		}
-
-		if strings.HasPrefix(line, "[") {
-			continue
-		}
-
-		if strings.HasPrefix(line, "#") {
-			continue
-		}
-
-		lineArr := strings.Split(line, "=")
-
-		if len(lineArr) < 2 {
-			return response, errors.New("Parse error, line: " + line)
-		} else if len(lineArr) == 2 {
-			mapLines[lineArr[0]] = lineArr[1]
-		} else {
-			value := lineArr[1]
-
-			for i := 2; i < len(lineArr); i++ {
-				value += "=" + lineArr[i]
-			}
-			mapLines[lineArr[0]] = value
-		}
+	mapLines, err := p.GetDesktopEntry(body)
+	if err != nil {
+		return response, err
 	}
 
 	if exec, ok := mapLines["Exec"]; ok {
@@ -103,4 +74,56 @@ func (p *parseDesktopFile) parse(body string) (
 	}
 
 	return response, nil
+}
+
+func (p *parseDesktopFile) GetDesktopEntry(body string) (map[string]string, error) {
+
+	bodyLines := strings.Split(body, "\n")
+
+	isSetDesktopEntry := true
+	responseMap := map[string]string{}
+	for _, line := range bodyLines {
+		line = strings.Trim(line, " ")
+		line = strings.Trim(line, "\t")
+		if line == "" {
+			continue
+		}
+
+		if strings.HasPrefix(line, "#") {
+			continue
+		}
+
+		lineArr := strings.Split(line, "=")
+
+		if strings.HasPrefix(line, "[Desktop Entry]") {
+			isSetDesktopEntry = true
+			continue
+		} else if strings.HasPrefix(line, "[") {
+			if isSetDesktopEntry {
+				return responseMap, nil
+			}
+			continue
+		}
+
+		if isSetDesktopEntry {
+			if len(lineArr) < 2 {
+				return responseMap, errors.New("Parse error, line: " + line)
+			} else if len(lineArr) == 2 {
+				responseMap[lineArr[0]] = lineArr[1]
+			} else {
+				value := lineArr[1]
+
+				for i := 2; i < len(lineArr); i++ {
+					value += "=" + lineArr[i]
+				}
+				responseMap[lineArr[0]] = value
+			}
+		}
+	}
+
+	if !isSetDesktopEntry {
+		return responseMap, errors.New("Desktop Entry not found")
+	}
+
+	return responseMap, nil
 }

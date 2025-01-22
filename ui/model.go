@@ -25,7 +25,7 @@ type item struct {
 func (i item) Title() string       { return i.title }
 func (i item) Description() string { return i.desc }
 func (i item) Command() string     { return i.command }
-func (i item) FilterValue() string { return i.title }
+func (i item) FilterValue() string { return i.title + i.desc }
 
 type modelUi struct {
 	list   list.Model

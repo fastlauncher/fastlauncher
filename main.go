@@ -4,7 +4,7 @@ import (
 	"flag"
 
 	"github.com/probeldev/fastlauncher/log"
-	sourceapps "github.com/probeldev/fastlauncher/sourceApps"
+	"github.com/probeldev/fastlauncher/mode"
 	"github.com/probeldev/fastlauncher/ui"
 )
 
@@ -14,13 +14,13 @@ func main() {
 	flag.Parse()
 
 	if cfgPath != nil && *cfgPath != "" {
-		ca := sourceapps.ConfigSourceApps{}
+		ca := mode.ConfigMode{}
 		apps := ca.GetFromFile(*cfgPath)
 		ui.StartUi(apps)
 		return
 	}
 
-	oa := sourceapps.OsSourceApp{}
+	oa := mode.OsMode{}
 	apps, err := oa.GetAll()
 	if err != nil {
 		// TODO

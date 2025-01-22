@@ -1,13 +1,13 @@
-package sourceapps
+package mode
 
 import (
 	"github.com/probeldev/fastlauncher/model"
 	"github.com/probeldev/fastlauncher/pkg/finderallapps"
 )
 
-type OsSourceApp struct{}
+type OsMode struct{}
 
-func (o *OsSourceApp) GetAll() ([]model.App, error) {
+func (o *OsMode) GetAll() ([]model.App, error) {
 	os := o.getOs()
 	finder, err := finderallapps.GetFinder(os)
 
@@ -35,7 +35,7 @@ func (o *OsSourceApp) GetAll() ([]model.App, error) {
 
 }
 
-func (o *OsSourceApp) getOs() string {
+func (o *OsMode) getOs() string {
 	// TODO change
 	return finderallapps.OsLinux
 }

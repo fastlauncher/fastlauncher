@@ -1,4 +1,4 @@
-package sourceapps
+package mode
 
 import (
 	"encoding/json"
@@ -8,9 +8,9 @@ import (
 	"github.com/probeldev/fastlauncher/model"
 )
 
-type ConfigSourceApps struct{}
+type ConfigMode struct{}
 
-func (cw *ConfigSourceApps) GetFromFile(cfgPath string) []model.App {
+func (cw *ConfigMode) GetFromFile(cfgPath string) []model.App {
 
 	response := []model.App{}
 

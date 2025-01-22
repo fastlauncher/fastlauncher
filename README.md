@@ -44,6 +44,12 @@ Bash
 
 ## Usage 
 
+### All apps from OS
+
+    fastlauncher
+
+### Apps from config
+
     fastlauncher --config ~/script/fast-launcher/cfg.json
 
 Example file [cfg.json](https://github.com/probeldev/fastlauncher/blob/main/cfg.json) 

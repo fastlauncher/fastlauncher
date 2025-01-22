@@ -21,6 +21,7 @@ func (lf *linuxFinder) GetAllApp() ([]model.App, error) {
 
 	foldersApps := []string{
 		"/usr/share/applications/",
+		"/usr/local/share/applications/",
 		"/var/lib/flatpak/exports/share/applications/",
 		"~/.local/share/flatpak/exports/share/application/",
 	}

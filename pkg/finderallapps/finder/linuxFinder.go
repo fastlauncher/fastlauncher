@@ -88,3 +88,7 @@ func (lf *linuxFinder) getAllDesktopListFromFolder(folder string) (
 
 	return desktopFiles, nil
 }
+
+func (lf *linuxFinder) GetFoldersFrom() {
+	// TODO get from env XDG_DATA_DIRS
+}

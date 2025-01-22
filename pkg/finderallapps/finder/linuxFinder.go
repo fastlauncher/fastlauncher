@@ -26,7 +26,7 @@ func (lf *linuxFinder) GetAllApp() ([]model.App, error) {
 	}
 
 	for _, folder := range foldersApps {
-		appsFromFolder, err := lf.getFromFolder(folder)
+		appsFromFolder, err := lf.GetFromFolder(folder)
 		if err != nil {
 			return apps, err
 		}
@@ -37,7 +37,7 @@ func (lf *linuxFinder) GetAllApp() ([]model.App, error) {
 	return apps, nil
 }
 
-func (lf *linuxFinder) getFromFolder(folder string) ([]model.App, error) {
+func (lf *linuxFinder) GetFromFolder(folder string) ([]model.App, error) {
 
 	files, err := lf.getAllDesktopListFromFolder(folder)
 	if err != nil {

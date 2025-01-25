@@ -19,12 +19,7 @@ func GetLinuxFinder() linuxFinder {
 func (lf *linuxFinder) GetAllApp() ([]model.App, error) {
 	apps := []model.App{}
 
-	foldersApps := []string{
-		"/usr/share/applications/",
-		"/usr/local/share/applications/",
-		"/var/lib/flatpak/exports/share/applications/",
-		"~/.local/share/flatpak/exports/share/application/",
-	}
+	foldersApps := lf.GetAllAppsFolders()
 
 	for _, folder := range foldersApps {
 		appsFromFolder, err := lf.GetFromFolder(folder)
@@ -89,6 +84,53 @@ func (lf *linuxFinder) getAllDesktopListFromFolder(folder string) (
 	return desktopFiles, nil
 }
 
-func (lf *linuxFinder) GetFoldersFrom() {
-	// TODO get from env XDG_DATA_DIRS
+func (lf *linuxFinder) GetAllAppsFolders() []string {
+	folders := []string{}
+
+	foldersFromXdg := lf.GetAppFoldersFromXdg()
+	folders = append(folders, foldersFromXdg...)
+
+	foldersDefault := lf.GetDefaultAppFolders()
+	folders = append(folders, foldersDefault...)
+
+	folders = lf.RemoveDuplicateAppFolders(folders)
+
+	return folders
+}
+
+func (lf *linuxFinder) GetAppFoldersFromXdg() []string {
+	xdg := os.Getenv("XDG_DATA_DIRS")
+
+	folders := strings.Split(xdg, ":")
+
+	for i := 0; i < len(folders); i++ {
+		folders[i] = folders[i] + "/applications/"
+	}
+
+	return folders
+}
+
+func (lf *linuxFinder) GetDefaultAppFolders() []string {
+	return []string{
+		"/usr/share/applications/",
+		"/usr/local/share/applications/",
+		"/var/lib/flatpak/exports/share/applications/",
+		"~/.local/share/flatpak/exports/share/application/",
+	}
+}
+
+func (lf *linuxFinder) RemoveDuplicateAppFolders(folders []string) []string {
+	mapFolders := map[string]bool{}
+
+	responseFolder := []string{}
+	for _, folder := range folders {
+		if _, ok := mapFolders[folder]; ok {
+			continue
+		}
+
+		mapFolders[folder] = true
+		responseFolder = append(responseFolder, folder)
+	}
+
+	return responseFolder
 }

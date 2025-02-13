@@ -1,6 +1,6 @@
 # FastLauncher
 
-TUI Application Launcher
+TUI Application Launcher. Alternative to rofi/wofi
 
 ![alt text](https://github.com/probeldev/fastlauncher/blob/main/guides/screenshots/main.png?raw=true)
 

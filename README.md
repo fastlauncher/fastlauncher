@@ -44,7 +44,7 @@ Bash
 
 ### Nix
 
-   nix profile install github:probeldev/fastlauncher 
+    nix profile install github:probeldev/fastlauncher 
 
 
 ## Usage 

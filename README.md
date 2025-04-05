@@ -24,6 +24,7 @@ Mac Os - Work in progress
 
 [Full guide for Arch Linux with KDE](https://github.com/probeldev/fastlauncher/tree/main/guides/arch_kde/readme.md)
 
+### Go
 Installation
 
     go install github.com/probeldev/fastlauncher@latest     
@@ -40,6 +41,10 @@ Zsh
 Bash
 
     echo "export PATH=\$PATH:~/go/bin" >> ~/.bashrc
+
+### Nix
+
+   nix profile install github:probeldev/fastlauncher 
 
 
 ## Usage 

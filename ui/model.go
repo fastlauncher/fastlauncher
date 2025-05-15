@@ -33,7 +33,14 @@ type modelUi struct {
 }
 
 func (m modelUi) Init() tea.Cmd {
-	return nil
+	return tea.Batch(
+		func() tea.Msg {
+			return tea.KeyMsg{
+				Type:  tea.KeyRunes,
+				Runes: []rune{'/'}, // Предполагается, что '/' запускает поиск
+			}
+		},
+	)
 }
 
 func (m modelUi) Update(msg tea.Msg) (tea.Model, tea.Cmd) {

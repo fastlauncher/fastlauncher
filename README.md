@@ -72,8 +72,3 @@ It's launched with the help of window manager. Example hyprland.conf:
     windowrulev2 = center(1), title:(fast-launcher)
 
 
-## Hotkeys
-
-h,j,k,l - Navigation
-
-? - Search

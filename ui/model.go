@@ -25,6 +25,9 @@ type uiModel struct {
 	pages        *tview.TextView
 	currentPage  int
 	itemsPerPage int
+	currentItem  int
+	lastWidth    int
+	lastHeight   int
 }
 
 // filterItems фильтрует элементы по запросу
@@ -44,6 +47,7 @@ func (m *uiModel) filterItems(query string) []item {
 
 // updateList обновляет содержимое списка
 func (m *uiModel) updateList() {
+	current := m.list.GetCurrentItem() // Сохраняем текущий элемент
 	m.list.Clear()
 	filtered := m.filterItems(m.input.GetText())
 	totalItems := len(filtered)
@@ -65,8 +69,10 @@ func (m *uiModel) updateList() {
 		m.list.AddItem(filtered[i].title, "", 0, nil)
 	}
 
-	// Устанавливаем текущий элемент на первый в списке, если список не пуст
-	if m.list.GetItemCount() > 0 && m.list.GetCurrentItem() < 0 {
+	// Восстанавливаем текущий элемент, если он в пределах нового списка
+	if current >= 0 && current < end-start {
+		m.list.SetCurrentItem(current)
+	} else if m.list.GetItemCount() > 0 {
 		m.list.SetCurrentItem(0)
 	}
 
@@ -76,10 +82,9 @@ func (m *uiModel) updateList() {
 }
 
 // updateItemsPerPage вычисляет количество элементов на странице
-func (m *uiModel) updateItemsPerPage() {
-	_, _, _, height := m.list.GetRect()
-	// Учитываем высоту поля поиска (1) и пагинатора (1)
-	m.itemsPerPage = height - 2
+func (m *uiModel) updateItemsPerPage(height int) {
+	// Высота всего экрана минус фиксированные элементы (поле ввода и пагинация)
+	m.itemsPerPage = height - 2 // 1 строка для ввода, 1 строка для пагинации
 	if m.itemsPerPage < 1 {
 		m.itemsPerPage = 1
 	}
@@ -90,6 +95,7 @@ func StartUi(apps []model.App) {
 	m := &uiModel{
 		items:       make([]item, len(apps)),
 		currentPage: 0,
+		currentItem: 0,
 	}
 
 	// Заполняем элементы
@@ -107,27 +113,21 @@ func StartUi(apps []model.App) {
 	m.list = tview.NewList().
 		ShowSecondaryText(false).
 		SetSelectedFunc(func(index int, mainText, secondaryText string, shortcut rune) {
-			// Отладка для проверки вызова
-			fmt.Println("SetSelectedFunc called, Index:", index, "MainText:", mainText)
 			// Запускаем команду
 			actualIndex := m.currentPage*m.itemsPerPage + index
 			filtered := m.filterItems(m.input.GetText())
 			if actualIndex < len(filtered) {
-				fmt.Println("Actual index:", actualIndex, "Filtered items:", len(filtered), "Command:", filtered[actualIndex].command)
 				runner, err := apprunner.GetAppRunner(apprunner.OsLinux)
 				if err != nil {
-					fmt.Println("GetAppRunner error:", err)
 					log.Println("GetAppRunner error:", err)
 					return
 				}
 				err = runner.Run(filtered[actualIndex].command)
 				if err != nil {
-					fmt.Println("Run error:", err)
 					log.Println("Run error:", err)
 					return
 				}
 			} else {
-				fmt.Println("Invalid index:", actualIndex, "Filtered length:", len(filtered))
 				log.Println("Invalid index:", actualIndex, "Filtered length:", len(filtered))
 			}
 			app.Stop()
@@ -155,84 +155,79 @@ func StartUi(apps []model.App) {
 
 	// Настраиваем обработку изменения размера через SetDrawFunc
 	flex.SetDrawFunc(func(screen tcell.Screen, x, y, width, height int) (int, int, int, int) {
-		m.updateItemsPerPage()
-		m.updateList()
+		// Проверяем, изменились ли размеры
+		if m.lastWidth != width || m.lastHeight != height {
+			m.lastWidth = width
+			m.lastHeight = height
+			m.updateItemsPerPage(height) // Используем полную высоту экрана
+			m.updateList()
+		}
 		return x, y, width, height
 	})
 
 	// Настраиваем клавиши
 	app.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
-		// fmt.Println("Key pressed:", event.Key(), "Focus:", app.GetFocus())
 		switch event.Key() {
 		case tcell.KeyLeft:
-			m.currentPage--
-			m.updateList()
+			if m.currentPage > 0 {
+				m.currentPage--
+				m.updateList()
+			}
 			return nil
 		case tcell.KeyRight:
-			m.currentPage++
-			m.updateList()
-			return nil
-		case tcell.KeyUp:
-			// Переключаем фокус на список, если он не в фокусе
-			if app.GetFocus() != m.list {
-				app.SetFocus(m.list)
-			}
-			// Перемещаем курсор вверх
-			current := m.list.GetCurrentItem()
-			if current > 0 {
-				m.list.SetCurrentItem(current - 1)
+			filtered := m.filterItems(m.input.GetText())
+			totalPages := (len(filtered) + m.itemsPerPage - 1) / m.itemsPerPage
+			if m.currentPage < totalPages-1 {
+				m.currentPage++
+				m.updateList()
 			}
 			return nil
-		case tcell.KeyDown:
-			// Переключаем фокус на список, если он не в фокусе
-			if app.GetFocus() != m.list {
-				app.SetFocus(m.list)
-			}
-			// Перемещаем курсор вниз
+		case tcell.KeyUp, tcell.KeyDown:
+			// Обрабатываем навигацию напрямую
 			current := m.list.GetCurrentItem()
-			if current < m.list.GetItemCount()-1 {
-				m.list.SetCurrentItem(current + 1)
+			if event.Key() == tcell.KeyUp {
+				if current > 0 {
+					m.list.SetCurrentItem(current - 1)
+				}
+			} else if event.Key() == tcell.KeyDown {
+				if current < m.list.GetItemCount()-1 {
+					m.list.SetCurrentItem(current + 1)
+				}
 			}
 			return nil
 		case tcell.KeyCtrlC, tcell.KeyEscape:
-			fmt.Println("Exiting application")
 			app.Stop()
 			return nil
 		case tcell.KeyEnter:
-			fmt.Println("Enter pressed, Focus:", app.GetFocus(), "ItemCount:", m.list.GetItemCount(), "CurrentItem:", m.list.GetCurrentItem())
 			if m.list.GetItemCount() == 0 {
-				fmt.Println("No items in list")
 				return nil
 			}
 			if app.GetFocus() == m.input {
-				// Переключаем фокус на список
+				// Переключаем фокус на список и выбираем первый элемент
 				app.SetFocus(m.list)
-				// Вызываем SetSelectedFunc для текущего элемента
-				current := m.list.GetCurrentItem()
-				if current >= 0 && current < m.list.GetItemCount() {
+				if m.list.GetItemCount() > 0 {
+					current := m.list.GetCurrentItem()
+					if current < 0 {
+						current = 0
+						m.list.SetCurrentItem(current)
+					}
 					mainText, secondaryText := m.list.GetItemText(current)
-					fmt.Println("Calling SetSelectedFunc from input focus")
 					m.list.GetSelectedFunc()(current, mainText, secondaryText, 0)
-				} else {
-					fmt.Println("Invalid current item:", current)
 				}
 				return nil
 			}
 			// Позволяем списку обработать Enter
-			fmt.Println("Forwarding Enter to list")
 			return event
 		}
 		return event
 	})
 
 	// Инициализируем itemsPerPage и список
-	m.updateItemsPerPage()
+	m.itemsPerPage = 10 // Начальное значение, будет обновлено при первом вызове SetDrawFunc
 	m.updateList()
 
 	// Запускаем приложение
-	fmt.Println("Starting application")
 	if err := app.SetRoot(flex, true).Run(); err != nil {
-		fmt.Println("Error running program:", err)
 		log.Println("Error running program:", err)
 		os.Exit(1)
 	}

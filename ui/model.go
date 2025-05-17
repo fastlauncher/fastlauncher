@@ -83,14 +83,29 @@ func (m *uiModel) updateList() {
 
 // updateItemsPerPage вычисляет количество элементов на странице
 func (m *uiModel) updateItemsPerPage(height int) {
-	// Высота всего экрана минус фиксированные элементы (поле ввода и пагинация)
-	m.itemsPerPage = height - 2 // 1 строка для ввода, 1 строка для пагинации
+	// Высота всего экрана минус фиксированные элементы (поле ввода, пагинация и padding)
+	m.itemsPerPage = height - 4 // 1 строка для ввода, 1 строка для пагинации, 2 строки для padding сверху и снизу
 	if m.itemsPerPage < 1 {
 		m.itemsPerPage = 1
 	}
 }
 
 func StartUi(apps []model.App) {
+	// Настраиваем стили tview для использования цветов терминала
+	tview.Styles = tview.Theme{
+		PrimitiveBackgroundColor:    tcell.ColorDefault,
+		ContrastBackgroundColor:     tcell.ColorDefault,
+		MoreContrastBackgroundColor: tcell.ColorDefault,
+		BorderColor:                 tcell.ColorDefault,
+		TitleColor:                  tcell.ColorDefault,
+		GraphicsColor:               tcell.ColorDefault,
+		PrimaryTextColor:            tcell.ColorDefault,
+		SecondaryTextColor:          tcell.ColorDefault,
+		TertiaryTextColor:           tcell.ColorDefault,
+		InverseTextColor:            tcell.ColorDefault,
+		ContrastSecondaryTextColor:  tcell.ColorDefault,
+	}
+
 	// Создаём модель
 	m := &uiModel{
 		items:       make([]item, len(apps)),
@@ -112,6 +127,8 @@ func StartUi(apps []model.App) {
 	// Создаём список
 	m.list = tview.NewList().
 		ShowSecondaryText(false).
+		SetMainTextStyle(tcell.StyleDefault.Foreground(tcell.ColorDefault).Background(tcell.ColorDefault)).
+		SetSelectedStyle(tcell.StyleDefault.Foreground(tcell.ColorDefault).Background(tcell.ColorDefault).Reverse(true)).
 		SetSelectedFunc(func(index int, mainText, secondaryText string, shortcut rune) {
 			// Запускаем команду
 			actualIndex := m.currentPage*m.itemsPerPage + index
@@ -133,28 +150,41 @@ func StartUi(apps []model.App) {
 			app.Stop()
 		})
 
-	// Создаём поле ввода
-	m.input = tview.NewInputField().
-		SetLabel("Поиск: ").
-		SetFieldBackgroundColor(tview.Styles.PrimitiveBackgroundColor).
-		SetChangedFunc(func(text string) {
-			m.currentPage = 0 // Сбрасываем страницу при изменении поиска
-			m.updateList()
-		})
+	// Создаём поле ввода с рамкой
+	m.input = tview.NewInputField()
+	m.input.SetLabel("Поиск: ").
+		SetLabelStyle(tcell.StyleDefault.Foreground(tcell.ColorDefault)).
+		SetFieldStyle(tcell.StyleDefault.Foreground(tcell.ColorDefault).Background(tcell.ColorDefault)).
+		SetBorder(true).
+		SetBorderStyle(tcell.StyleDefault.Foreground(tcell.ColorDefault))
+	m.input.SetChangedFunc(func(text string) {
+		m.currentPage = 0 // Сбрасываем страницу при изменении поиска
+		m.updateList()
+	})
 
 	// Создаём индикатор пагинации
 	m.pages = tview.NewTextView().
 		SetTextAlign(tview.AlignLeft).
-		SetTextColor(tview.Styles.ContrastBackgroundColor)
+		SetTextStyle(tcell.StyleDefault.Foreground(tcell.ColorDefault).Background(tcell.ColorDefault))
 
-	// Компоновка
-	flex := tview.NewFlex().SetDirection(tview.FlexRow).
-		AddItem(m.input, 1, 1, true). // Поле поиска в фокусе
+	// Компоновка с padding
+	innerFlex := tview.NewFlex().SetDirection(tview.FlexRow).
+		AddItem(m.input, 3, 1, true). // Увеличиваем высоту для рамки (1 строка текста + 2 строки рамки)
 		AddItem(m.list, 0, 1, false).
 		AddItem(m.pages, 1, 1, false)
 
+	// Добавляем padding (1 строка сверху и снизу, 2 столбца слева и справа)
+	outerFlex := tview.NewFlex().SetDirection(tview.FlexRow).
+		AddItem(tview.NewBox(), 1, 0, false). // Padding сверху
+		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
+			AddItem(tview.NewBox(), 2, 0, false). // Padding слева
+			AddItem(innerFlex, 0, 1, true).
+			AddItem(tview.NewBox(), 2, 0, false), // Padding справа
+							0, 1, true).
+		AddItem(tview.NewBox(), 1, 0, false) // Padding снизу
+
 	// Настраиваем обработку изменения размера через SetDrawFunc
-	flex.SetDrawFunc(func(screen tcell.Screen, x, y, width, height int) (int, int, int, int) {
+	outerFlex.SetDrawFunc(func(screen tcell.Screen, x, y, width, height int) (int, int, int, int) {
 		// Проверяем, изменились ли размеры
 		if m.lastWidth != width || m.lastHeight != height {
 			m.lastWidth = width
@@ -183,6 +213,14 @@ func StartUi(apps []model.App) {
 			}
 			return nil
 		case tcell.KeyUp, tcell.KeyDown:
+			// Переключаем фокус на список, если он не в фокусе
+			if app.GetFocus() != m.list {
+				app.SetFocus(m.list)
+				// Устанавливаем первый элемент, если список только получил фокус
+				if m.list.GetItemCount() > 0 && m.list.GetCurrentItem() < 0 {
+					m.list.SetCurrentItem(0)
+				}
+			}
 			// Обрабатываем навигацию напрямую
 			current := m.list.GetCurrentItem()
 			if event.Key() == tcell.KeyUp {
@@ -227,7 +265,7 @@ func StartUi(apps []model.App) {
 	m.updateList()
 
 	// Запускаем приложение
-	if err := app.SetRoot(flex, true).Run(); err != nil {
+	if err := app.SetRoot(outerFlex, true).Run(); err != nil {
 		log.Println("Error running program:", err)
 		os.Exit(1)
 	}

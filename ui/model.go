@@ -213,14 +213,6 @@ func StartUi(apps []model.App) {
 			}
 			return nil
 		case tcell.KeyUp, tcell.KeyDown:
-			// Переключаем фокус на список, если он не в фокусе
-			if app.GetFocus() != m.list {
-				app.SetFocus(m.list)
-				// Устанавливаем первый элемент, если список только получил фокус
-				if m.list.GetItemCount() > 0 && m.list.GetCurrentItem() < 0 {
-					m.list.SetCurrentItem(0)
-				}
-			}
 			// Обрабатываем навигацию напрямую
 			current := m.list.GetCurrentItem()
 			if event.Key() == tcell.KeyUp {

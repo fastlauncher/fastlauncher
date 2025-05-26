@@ -26,9 +26,9 @@ func NewAppListFromJson(
 	return response, nil
 }
 
-func (a *App) ToJson() (
+func AppListToJson(apps []App) (
 	[]byte,
 	error,
 ) {
-	return json.Marshal(a)
+	return json.Marshal(apps)
 }

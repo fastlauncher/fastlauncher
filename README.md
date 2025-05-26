@@ -2,7 +2,7 @@
 
 TUI Application Launcher. Alternative to rofi/wofi
 
-![alt text](https://github.com/probeldev/fastlauncher/blob/main/guides/screenshots/main.png?raw=true)
+![main windows](https://github.com/probeldev/fastlauncher/blob/main/guides/screenshots/main.png?raw=true)
 
 ## Suport OS
 
@@ -18,7 +18,7 @@ Mac Os - Work in progress
 
 [Example config](https://github.com/probeldev/fastlauncher/blob/main/examples/logout-manager/cfg.json) 
 
-![alt text](https://github.com/probeldev/fastlauncher/blob/main/guides/screenshots/logout-manager.png?raw=true)
+![Logout manager](https://github.com/probeldev/fastlauncher/blob/main/guides/screenshots/logout-manager.png?raw=true)
 
 ## Installation
 

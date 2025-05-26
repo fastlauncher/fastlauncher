@@ -1,7 +1,6 @@
 package mode
 
 import (
-	"encoding/json"
 	"os"
 
 	"github.com/probeldev/fastlauncher/log"
@@ -11,23 +10,23 @@ import (
 type ConfigMode struct{}
 
 func (cw *ConfigMode) GetFromFile(cfgPath string) []model.App {
-
-	response := []model.App{}
+	fn := "ConfigMode:GetFromFile"
 
 	if cfgPath == "" {
-		log.Println("cfg path not found")
-		return response
+		log.Println(fn, "cfg path not found")
+		return nil
 	}
 
 	file, err := os.ReadFile(cfgPath)
 	if err != nil {
-		log.Println(err)
-		return response
+		log.Println(fn, err)
+		return nil
 	}
 
-	if err := json.Unmarshal(file, &response); err != nil {
-		log.Println(err)
-		return response
+	response, err := model.NewAppListFromJson(file)
+	if err != nil {
+		log.Println(fn, err)
+		return nil
 	}
 
 	return response

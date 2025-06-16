@@ -20,6 +20,13 @@ Mac Os - Work in progress
 
 ![Logout manager](https://github.com/probeldev/fastlauncher/blob/main/guides/screenshots/logout-manager.png?raw=true)
 
+### Emoji Select 
+
+[Example config](https://github.com/probeldev/fastlauncher/blob/main/examples/emoji/emoji.json) 
+
+![Emoji select](https://github.com/probeldev/fastlauncher/blob/main/guides/screenshots/emoji-select.png?raw=true)
+
+
 ## Installation
 
 [Full guide for Arch Linux with KDE](https://github.com/probeldev/fastlauncher/tree/main/guides/arch_kde/readme.md)

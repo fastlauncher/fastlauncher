@@ -18,5 +18,5 @@ func (mf *macOsFinder) GetAllApp() ([]model.App, error) {
 	apps := []model.App{}
 	// TODO:
 
-	return apps, errors.New("MacOs is not suport")
+	return apps, errors.New("MacOs is not support")
 }

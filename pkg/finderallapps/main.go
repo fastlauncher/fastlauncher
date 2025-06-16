@@ -31,5 +31,5 @@ func GetFinder(operatingSystem string) (FinderInterface, error) {
 		return &windowsFinder, nil
 	}
 
-	return nil, errors.New("Operating System not suport")
+	return nil, errors.New("operating system not support")
 }

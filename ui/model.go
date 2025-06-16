@@ -51,10 +51,10 @@ func (m *uiModel) filterItems(query string) []item {
 
 // fuzzyMatch проверяет, можно ли найти query как подпоследовательность в str
 func fuzzyMatch(str, query string) bool {
-	if len(query) == 0 {
+	if query == "" {
 		return true
 	}
-	if len(str) == 0 {
+	if str == "" {
 		return false
 	}
 

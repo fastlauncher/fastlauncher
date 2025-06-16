@@ -103,7 +103,7 @@ func (lf *linuxFinder) GetAppFoldersFromXdg() []string {
 
 	folders := strings.Split(xdg, ":")
 
-	for i := 0; i < len(folders); i++ {
+	for i := range folders {
 		folders[i] = folders[i] + "/applications/"
 	}
 

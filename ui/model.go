@@ -99,7 +99,7 @@ func (m *uiModel) updateList() {
 	}
 
 	// Обновляем индикатор пагинации
-	pageText := fmt.Sprintf("Страница %d/%d (←/→)", m.currentPage+1, totalPages)
+	pageText := fmt.Sprintf("Page %d/%d (←/→)", m.currentPage+1, totalPages)
 	m.pages.SetText(pageText)
 }
 
@@ -172,7 +172,7 @@ func StartUi(apps []model.App) {
 
 	// Создаём поле ввода с рамкой
 	m.input = tview.NewInputField()
-	m.input.SetLabel("Поиск: ").
+	m.input.SetLabel("Search: ").
 		SetLabelStyle(tcell.StyleDefault.Foreground(tcell.ColorDefault)).
 		SetFieldStyle(tcell.StyleDefault.Foreground(tcell.ColorDefault).Background(tcell.ColorDefault)).
 		SetBorder(true).

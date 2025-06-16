@@ -61,9 +61,7 @@ func (m *uiModel) updateList() {
 
 	start := m.currentPage * m.itemsPerPage
 	end := start + m.itemsPerPage
-	if end > totalItems {
-		end = totalItems
-	}
+	end = min(end, totalItems)
 
 	for i := start; i < end; i++ {
 		m.list.AddItem(filtered[i].title, "", 0, nil)
@@ -85,9 +83,7 @@ func (m *uiModel) updateList() {
 func (m *uiModel) updateItemsPerPage(height int) {
 	// Высота всего экрана минус фиксированные элементы (поле ввода, пагинация и padding)
 	m.itemsPerPage = height - 4 // 1 строка для ввода, 1 строка для пагинации, 2 строки для padding сверху и снизу
-	if m.itemsPerPage < 1 {
-		m.itemsPerPage = 1
-	}
+	m.itemsPerPage = max(m.itemsPerPage, 1)
 }
 
 func StartUi(apps []model.App) {

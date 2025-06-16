@@ -4,7 +4,7 @@ TUI Application Launcher. Alternative to rofi/wofi
 
 ![main windows](https://github.com/probeldev/fastlauncher/blob/main/guides/screenshots/main.png?raw=true)
 
-## Suport OS
+## Support OS
 
 Linux - Done
 

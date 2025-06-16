@@ -30,5 +30,5 @@ func GetAppRunner(operatingSystem string) (AppRunnerInterface, error) {
 		return &windowsAppRunner, nil
 	}
 
-	return nil, errors.New("Operating System not suport")
+	return nil, errors.New("operating system not support")
 }

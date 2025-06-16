@@ -13,5 +13,5 @@ func GetMacOsAppRunner() macOsAppRunner {
 func (lr *macOsAppRunner) Run(command string) error {
 	// TODO:
 
-	return errors.New("MacOs is not suport")
+	return errors.New("MacOs is not support")
 }

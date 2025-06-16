@@ -3,9 +3,6 @@ module github.com/probeldev/fastlauncher
 go 1.22.3
 
 require (
-	github.com/charmbracelet/bubbles v0.18.0
-	github.com/charmbracelet/bubbletea v1.3.5
-	github.com/charmbracelet/lipgloss v1.1.0
 	github.com/gdamore/tcell/v2 v2.7.1
 	github.com/rivo/tview v0.0.0-20250501113434-0c592cd31026
 )

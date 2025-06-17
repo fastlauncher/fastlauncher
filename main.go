@@ -10,6 +10,8 @@ import (
 
 func main() {
 
+	log.Println("test")
+
 	cfgPath := flag.String("config", "", "Path to config file")
 	flag.Parse()
 

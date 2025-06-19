@@ -9,7 +9,6 @@ import (
 )
 
 func main() {
-
 	cfgPath := flag.String("config", "", "Path to config file")
 	flag.Parse()
 
@@ -28,5 +27,4 @@ func main() {
 	}
 
 	ui.StartUi(apps)
-
 }

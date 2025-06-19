@@ -18,7 +18,6 @@ type FinderInterface interface {
 }
 
 func GetFinder(operatingSystem string) (FinderInterface, error) {
-
 	switch operatingSystem {
 	case OsLinux:
 		linuxFinder := finder.GetLinuxFinder()

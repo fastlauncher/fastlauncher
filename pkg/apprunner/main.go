@@ -17,7 +17,6 @@ type AppRunnerInterface interface {
 }
 
 func GetAppRunner(operatingSystem string) (AppRunnerInterface, error) {
-
 	switch operatingSystem {
 	case OsLinux:
 		linuxAppRunner := runner.GetLinuxAppRunner()

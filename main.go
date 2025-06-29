@@ -15,7 +15,7 @@ func main() {
 	if cfgPath != nil && *cfgPath != "" {
 		ca := mode.ConfigMode{}
 		apps := ca.GetFromFile(*cfgPath)
-		ui.StartUi(apps)
+		ui.StartUI(apps)
 		return
 	}
 
@@ -26,5 +26,5 @@ func main() {
 		log.Println(err)
 	}
 
-	ui.StartUi(apps)
+	ui.StartUI(apps)
 }

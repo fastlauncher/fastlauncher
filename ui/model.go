@@ -110,7 +110,7 @@ func (m *uiModel) updateItemsPerPage(height int) {
 	m.itemsPerPage = max(m.itemsPerPage, 1)
 }
 
-func StartUi(apps []model.App) {
+func StartUI(apps []model.App) {
 	// Настраиваем стили tview для использования цветов терминала
 	tview.Styles = tview.Theme{
 		PrimitiveBackgroundColor:    tcell.ColorDefault,

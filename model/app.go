@@ -11,7 +11,7 @@ type App struct {
 	Keywords    string `json:"keywords"`
 }
 
-func NewAppListFromJson(
+func NewAppListFromJSON(
 	j []byte,
 ) (
 	[]App,
@@ -26,7 +26,7 @@ func NewAppListFromJson(
 	return response, nil
 }
 
-func AppListToJson(apps []App) (
+func AppListToJSON(apps []App) (
 	[]byte,
 	error,
 ) {

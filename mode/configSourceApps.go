@@ -23,7 +23,7 @@ func (cw *ConfigMode) GetFromFile(cfgPath string) []model.App {
 		return nil
 	}
 
-	response, err := model.NewAppListFromJson(file)
+	response, err := model.NewAppListFromJSON(file)
 	if err != nil {
 		log.Println(fn, err)
 		return nil

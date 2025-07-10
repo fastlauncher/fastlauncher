@@ -33,8 +33,9 @@ Mac Os - Work in progress
 
 ### Go
 Installation
-
+```bash
     go install github.com/probeldev/fastlauncher@latest     
+```
 
 
 If you get an error claiming that lazygit cannot be found or is not defined, you
@@ -42,27 +43,36 @@ may need to add `~/go/bin` to your $PATH (MacOS/Linux), or `%HOME%\go\bin`
 (Windows)
 
 Zsh
-
+```bash
     echo "export PATH=\$PATH:~/go/bin" >> ~/.zshrc
+```
 
 Bash
 
+```bash
     echo "export PATH=\$PATH:~/go/bin" >> ~/.bashrc
+```
 
 ### Nix
 
+```bash
     nix profile install github:probeldev/fastlauncher 
+```
 
 
 ## Usage 
 
 ### All apps from OS
 
+```bash
     fastlauncher
+```
 
 ### Apps from config
 
+```bash
     fastlauncher --config ~/script/fast-launcher/cfg.json
+```
 
 Example file [cfg.json](https://github.com/probeldev/fastlauncher/blob/main/cfg.json) 
 

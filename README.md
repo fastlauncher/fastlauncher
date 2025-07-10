@@ -33,8 +33,9 @@ Mac Os - Work in progress
 
 ### Go
 Installation
+
 ```bash
-    go install github.com/probeldev/fastlauncher@latest     
+go install github.com/probeldev/fastlauncher@latest     
 ```
 
 
@@ -43,20 +44,21 @@ may need to add `~/go/bin` to your $PATH (MacOS/Linux), or `%HOME%\go\bin`
 (Windows)
 
 Zsh
+
 ```bash
-    echo "export PATH=\$PATH:~/go/bin" >> ~/.zshrc
+echo "export PATH=\$PATH:~/go/bin" >> ~/.zshrc
 ```
 
 Bash
 
 ```bash
-    echo "export PATH=\$PATH:~/go/bin" >> ~/.bashrc
+echo "export PATH=\$PATH:~/go/bin" >> ~/.bashrc
 ```
 
 ### Nix
 
 ```bash
-    nix profile install github:probeldev/fastlauncher 
+nix profile install github:probeldev/fastlauncher 
 ```
 
 
@@ -65,27 +67,29 @@ Bash
 ### All apps from OS
 
 ```bash
-    fastlauncher
+fastlauncher
 ```
 
 ### Apps from config
 
 ```bash
-    fastlauncher --config ~/script/fast-launcher/cfg.json
+fastlauncher --config ~/script/fast-launcher/cfg.json
 ```
 
 Example file [cfg.json](https://github.com/probeldev/fastlauncher/blob/main/cfg.json) 
 
 It's launched with the help of window manager. Example hyprland.conf:
-    
-    $terminal = foot
-    $menu = $terminal -T fast-launcher fastlauncher --config ~/script/fast-launcher/cfg.json
-    bind = $mainMod, D, exec, $menu
+
+```
+$terminal = foot
+$menu = $terminal -T fast-launcher fastlauncher --config ~/script/fast-launcher/cfg.json
+bind = $mainMod, D, exec, $menu
 
 
-    windowrulev2 = float,title:(fast-launcher)
-    windowrulev2 = pin,title:(fast-launcher)
-    windowrulev2 = size 1000 600,title:(fast-launcher)
-    windowrulev2 = center(1), title:(fast-launcher)
+windowrulev2 = float,title:(fast-launcher)
+windowrulev2 = pin,title:(fast-launcher)
+windowrulev2 = size 1000 600,title:(fast-launcher)
+windowrulev2 = center(1), title:(fast-launcher)
+```
 
 

@@ -81,7 +81,7 @@ Example file [cfg.json](https://github.com/probeldev/fastlauncher/blob/main/cfg.
 It's launched with the help of window manager. Example hyprland.conf:
 
 ```
-$terminal = foot
+$terminal = alacritty
 $menu = $terminal -T fast-launcher fastlauncher --config ~/script/fast-launcher/cfg.json
 bind = $mainMod, D, exec, $menu
 

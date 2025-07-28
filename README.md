@@ -16,13 +16,13 @@ Mac Os - Work in progress
 
 ### Logout Manager
 
-[Example config](https://github.com/probeldev/fastlauncher/blob/main/examples/logout-manager/cfg.json) 
+[Example config](https://github.com/probeldev/fastlauncher/blob/main/guides/examples/logout-manager/cfg.json) 
 
 ![Logout manager](https://github.com/probeldev/fastlauncher/blob/main/guides/screenshots/logout-manager.png?raw=true)
 
 ### Emoji Select 
 
-[Example config](https://github.com/probeldev/fastlauncher/blob/main/examples/emoji/emoji.json) 
+[Example config](https://github.com/probeldev/fastlauncher/blob/main/guides/examples/emoji/emoji.json) 
 
 ![Emoji select](https://github.com/probeldev/fastlauncher/blob/main/guides/screenshots/emoji-select.png?raw=true)
 

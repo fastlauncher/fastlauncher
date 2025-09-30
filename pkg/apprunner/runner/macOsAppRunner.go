@@ -1,6 +1,9 @@
 package runner
 
-import "errors"
+import (
+	"os/exec"
+	"syscall"
+)
 
 type macOsAppRunner struct{}
 
@@ -11,7 +14,11 @@ func GetMacOsAppRunner() macOsAppRunner {
 }
 
 func (lr *macOsAppRunner) Run(command string) error {
-	// TODO:
+	cmd := exec.Command("bash", "-c", command)
+	cmd.SysProcAttr = &syscall.SysProcAttr{
+		Setpgid: true,
+	}
+	err := cmd.Start()
 
-	return errors.New("MacOs is not support")
+	return err
 }

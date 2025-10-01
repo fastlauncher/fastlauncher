@@ -98,6 +98,8 @@ func (m *uiModel) updateList() {
 // executeCommand выполняет команду (аналогично TUI версии)
 func (m *uiModel) executeCommand(cmd string) {
 
+	log.Println("command:", cmd)
+
 	// Используем apprunner из TUI версии
 	// TODO: GET OS
 	runner, err := apprunner.GetAppRunner(apprunner.OsLinux) // или определите ОС динамически

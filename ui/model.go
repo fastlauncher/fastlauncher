@@ -22,13 +22,14 @@ type item struct {
 }
 
 type uiModel struct {
-	items       []item
-	commands    map[string]string
-	filtered    []string
-	input       *widget.Entry
-	list        *widget.List
-	currentItem int
-	window      fyne.Window
+	items           []item
+	commands        map[string]string
+	filtered        []string
+	input           *widget.Entry
+	list            *widget.List
+	currentItem     int
+	window          fyne.Window
+	ignoreSelection bool // Флаг для игнорирования события выбора
 }
 
 // filterItems фильтрует элементы по запросу (fuzzy search как в TUI версии)
@@ -89,7 +90,9 @@ func (m *uiModel) updateList() {
 	if m.list != nil {
 		m.list.Refresh()
 		if m.currentItem >= 0 {
+			m.ignoreSelection = true
 			m.list.Select(m.currentItem)
+			m.ignoreSelection = false
 		}
 	}
 }
@@ -142,7 +145,9 @@ func (m *uiModel) moveSelection(direction int) {
 	}
 
 	m.currentItem = newIndex
+	m.ignoreSelection = true
 	m.list.Select(m.currentItem)
+	m.ignoreSelection = false
 	m.list.Refresh()
 }
 
@@ -181,8 +186,12 @@ func NewCustomListItem(title, description string, isSelected bool) *CustomListIt
 
 	if isSelected {
 		item.background.FillColor = color.NRGBA{R: 0x33, G: 0x99, B: 0xff, A: 0x99} // Голубой с прозрачностью
+		item.title.Color = color.White
+		item.description.Color = color.White
 	} else {
 		item.background.FillColor = color.White
+		item.title.Color = color.Black
+		item.description.Color = color.Gray{0x80}
 	}
 
 	item.ExtendBaseWidget(item)
@@ -240,27 +249,72 @@ func (m *uiModel) createCustomList() *widget.List {
 		},
 	)
 
-	// Обработка выбора из списка
+	// Обработка выбора из списка - только при клике мышью
 	list.OnSelected = func(id widget.ListItemID) {
-		m.currentItem = id
-		m.executeSelected()
+		if !m.ignoreSelection {
+			m.currentItem = id
+			m.executeSelected()
+		}
 	}
 
 	return list
 }
 
-// handleKeyPress обрабатывает нажатия клавиш
-func (m *uiModel) handleKeyPress(key *fyne.KeyEvent) {
+// CustomEntry - кастомное поле ввода, которое передает стрелки наверх
+type CustomEntry struct {
+	widget.Entry
+	onArrowUp   func()
+	onArrowDown func()
+	onEnter     func()
+}
+
+// NewCustomEntry создает новое кастомное поле ввода
+func NewCustomEntry() *CustomEntry {
+	entry := &CustomEntry{}
+	entry.ExtendBaseWidget(entry)
+	// entry.Wrapping = fyne.TextTruncation
+	return entry
+}
+
+// TypedKey обрабатывает нажатия клавиш
+func (e *CustomEntry) TypedKey(key *fyne.KeyEvent) {
 	switch key.Name {
 	case fyne.KeyUp:
-		m.moveSelection(-1)
+		if e.onArrowUp != nil {
+			e.onArrowUp()
+		}
+		return // Предотвращаем стандартную обработку
 	case fyne.KeyDown:
-		m.moveSelection(1)
+		if e.onArrowDown != nil {
+			e.onArrowDown()
+		}
+		return // Предотвращаем стандартную обработку
 	case fyne.KeyReturn, fyne.KeyEnter:
-		m.executeSelected()
-	case fyne.KeyEscape:
-		m.window.Close()
+		if e.onEnter != nil {
+			e.onEnter()
+		} else {
+			e.Entry.TypedKey(key)
+		}
+		return
+	default:
+		// Для остальных клавиш вызываем стандартный обработчик
+		e.Entry.TypedKey(key)
 	}
+}
+
+// SetOnArrowUp устанавливает обработчик стрелки вверх
+func (e *CustomEntry) SetOnArrowUp(handler func()) {
+	e.onArrowUp = handler
+}
+
+// SetOnArrowDown устанавливает обработчик стрелки вниз
+func (e *CustomEntry) SetOnArrowDown(handler func()) {
+	e.onArrowDown = handler
+}
+
+// SetOnEnter устанавливает обработчик Enter
+func (e *CustomEntry) SetOnEnter(handler func()) {
+	e.onEnter = handler
 }
 
 func StartUI(apps []model.App) {
@@ -286,10 +340,21 @@ func StartUI(apps []model.App) {
 		m.commands[a.Title] = a.Command
 	}
 
-	// Поле ввода как в Fyne версии, но с логикой из TUI
-	input := widget.NewEntry()
+	// Используем кастомное поле ввода
+	input := NewCustomEntry()
 	input.SetPlaceHolder("Введите команду для поиска...")
-	m.input = input
+	m.input = &input.Entry
+
+	// Устанавливаем обработчики стрелок
+	input.SetOnArrowUp(func() {
+		m.moveSelection(-1)
+	})
+	input.SetOnArrowDown(func() {
+		m.moveSelection(1)
+	})
+	input.SetOnEnter(func() {
+		m.executeSelected()
+	})
 
 	// Создаем кастомный список
 	list := m.createCustomList()
@@ -300,30 +365,11 @@ func StartUI(apps []model.App) {
 		m.updateList()
 	}
 
-	// Обработка Enter - комбинация обеих версий
-	input.OnSubmitted = func(cmd string) {
-		// Если есть выбранный элемент, выполняем его
-		if m.currentItem >= 0 && m.currentItem < len(m.filtered) {
-			m.executeSelected()
-			return
-		}
-
-		// Иначе пытаемся найти точное совпадение
-		if command, exists := m.commands[cmd]; exists {
-			m.executeCommand(command)
-			myWindow.Close()
-			return
-		}
-
-		// Если ничего не найдено, выполняем как есть
-		m.executeCommand(cmd)
-		myWindow.Close()
-	}
-
-	// Обработка клавиш для навигации стрелками на уровне окна
+	// Дополнительная обработка клавиш на уровне окна для Escape
 	myWindow.Canvas().SetOnTypedKey(func(key *fyne.KeyEvent) {
-		// Если фокус на поле ввода или списке, обрабатываем навигацию
-		m.handleKeyPress(key)
+		if key.Name == fyne.KeyEscape {
+			myWindow.Close()
+		}
 	})
 
 	// Компоновка как в Fyne версии

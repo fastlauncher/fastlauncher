@@ -3,8 +3,6 @@ package ui
 import (
 	"image/color"
 	"log"
-	"os/exec"
-	"path/filepath"
 	"strings"
 
 	"fyne.io/fyne/v2"
@@ -99,19 +97,9 @@ func (m *uiModel) updateList() {
 
 // executeCommand выполняет команду (аналогично TUI версии)
 func (m *uiModel) executeCommand(cmd string) {
-	log.Printf("Executing: %s", cmd)
-
-	// Специальная обработка для Ghostty (из Fyne версии)
-	if strings.HasPrefix(cmd, "open -a Ghostty") {
-		parts := strings.Fields(cmd)
-		if len(parts) >= 4 {
-			path := strings.Join(parts[3:], " ")
-			m.openGhostty(path)
-			return
-		}
-	}
 
 	// Используем apprunner из TUI версии
+	// TODO: GET OS
 	runner, err := apprunner.GetAppRunner(apprunner.OsLinux) // или определите ОС динамически
 	if err != nil {
 		log.Println("GetAppRunner error:", err)
@@ -123,12 +111,6 @@ func (m *uiModel) executeCommand(cmd string) {
 		log.Println("Run error:", err)
 		return
 	}
-}
-
-func (m *uiModel) openGhostty(path string) {
-	expandedPath, _ := filepath.Abs(path)
-	cmd := exec.Command("open", "-a", "Ghostty", expandedPath)
-	go cmd.Run()
 }
 
 // moveSelection перемещает выделение вверх или вниз

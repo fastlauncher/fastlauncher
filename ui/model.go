@@ -20,7 +20,7 @@ type item struct {
 }
 
 type uiModel struct {
-	items           []item
+	items           []model.App
 	commands        map[string]string
 	filtered        []string
 	input           *widget.Entry
@@ -310,17 +310,12 @@ func StartUI(apps []model.App) {
 
 	// Создаём модель как в TUI версии
 	m := &uiModel{
-		items:    make([]item, len(apps)),
 		commands: make(map[string]string),
 		window:   myWindow,
 	}
 
 	// Заполняем элементы как в TUI версии и создаем commands map для Fyne
-	for i, a := range apps {
-		m.items[i] = item{
-			title:   a.Title,
-			command: a.Command,
-		}
+	for _, a := range apps {
 		m.commands[a.Title] = a.Command
 	}
 

@@ -22,7 +22,7 @@ type item struct {
 type uiModel struct {
 	items           []model.App
 	commands        map[string]string
-	filtered        []string
+	filtered        []model.App
 	input           *widget.Entry
 	list            *widget.List
 	currentItem     int
@@ -31,23 +31,18 @@ type uiModel struct {
 }
 
 // filterItems фильтрует элементы по запросу (fuzzy search как в TUI версии)
-func (m *uiModel) filterItems(query string) []string {
+func (m *uiModel) filterItems(query string) []model.App {
 	if query == "" {
-		// Возвращаем все ключи
-		allKeys := make([]string, 0, len(m.commands))
-		for key := range m.commands {
-			allKeys = append(allKeys, key)
-		}
-		return allKeys
+		return m.items
 	}
 
 	query = strings.ToLower(query)
-	var filtered []string
+	var filtered []model.App
 
-	for key := range m.commands {
-		title := strings.ToLower(key)
+	for _, item := range m.items {
+		title := strings.ToLower(item.Title)
 		if fuzzyMatch(title, query) {
-			filtered = append(filtered, key)
+			filtered = append(filtered, item)
 		}
 	}
 
@@ -138,7 +133,7 @@ func (m *uiModel) moveSelection(direction int) {
 // executeSelected выполняет выбранную команду
 func (m *uiModel) executeSelected() {
 	if m.currentItem >= 0 && m.currentItem < len(m.filtered) {
-		selectedKey := m.filtered[m.currentItem]
+		selectedKey := m.filtered[m.currentItem].Title
 		if cmd, exists := m.commands[selectedKey]; exists {
 			m.executeCommand(cmd)
 			m.window.Close()
@@ -211,8 +206,8 @@ func (m *uiModel) createCustomList() *widget.List {
 				item := o.(*CustomListItem)
 
 				// Обновляем текст
-				item.title.Text = key
-				item.description.Text = m.commands[key]
+				item.title.Text = key.Title
+				item.description.Text = m.commands[key.Title]
 
 				// Обновляем выделение
 				item.isSelected = (i == m.currentItem)
@@ -311,6 +306,7 @@ func StartUI(apps []model.App) {
 	// Создаём модель как в TUI версии
 	m := &uiModel{
 		commands: make(map[string]string),
+		items:    apps,
 		window:   myWindow,
 	}
 

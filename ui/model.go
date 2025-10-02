@@ -21,7 +21,6 @@ type item struct {
 
 type uiModel struct {
 	items           []model.App
-	commands        map[string]string
 	filtered        []model.App
 	input           *widget.Entry
 	list            *widget.List
@@ -134,11 +133,30 @@ func (m *uiModel) moveSelection(direction int) {
 func (m *uiModel) executeSelected() {
 	if m.currentItem >= 0 && m.currentItem < len(m.filtered) {
 		selectedKey := m.filtered[m.currentItem].Title
-		if cmd, exists := m.commands[selectedKey]; exists {
-			m.executeCommand(cmd)
+		if cmd, exists := m.getSelectedApp(selectedKey); exists {
+			m.executeCommand(cmd.Command)
 			m.window.Close()
 		}
 	}
+}
+
+func (m *uiModel) getSelectedApp(
+	selectedKey string,
+) (
+	model.App,
+	bool,
+) {
+	// TODO крайне сомнительный способ получать приложение по тайтлу
+	exists := false
+
+	for _, app := range m.items {
+		if app.Title == selectedKey {
+			exists = true
+			return app, exists
+		}
+	}
+
+	return model.App{}, exists
 }
 
 // CustomListItem создает кастомный элемент списка с выделением
@@ -207,7 +225,7 @@ func (m *uiModel) createCustomList() *widget.List {
 
 				// Обновляем текст
 				item.title.Text = key.Title
-				item.description.Text = m.commands[key.Title]
+				item.description.Text = key.Description
 
 				// Обновляем выделение
 				item.isSelected = (i == m.currentItem)
@@ -305,14 +323,8 @@ func StartUI(apps []model.App) {
 
 	// Создаём модель как в TUI версии
 	m := &uiModel{
-		commands: make(map[string]string),
-		items:    apps,
-		window:   myWindow,
-	}
-
-	// Заполняем элементы как в TUI версии и создаем commands map для Fyne
-	for _, a := range apps {
-		m.commands[a.Title] = a.Command
+		items:  apps,
+		window: myWindow,
 	}
 
 	// Используем кастомное поле ввода

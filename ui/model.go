@@ -1,3 +1,4 @@
+// Package ui - implementation ui
 package ui
 
 import (
@@ -13,11 +14,6 @@ import (
 	"github.com/probeldev/fastlauncher/model"
 	"github.com/probeldev/fastlauncher/pkg/apprunner"
 )
-
-type item struct {
-	title   string
-	command string
-}
 
 type uiModel struct {
 	items           []model.App

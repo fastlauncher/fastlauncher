@@ -10,7 +10,7 @@ Linux - Done
 
 Windows - Work in progress
 
-Mac Os - Work in progress
+Mac Os - Done
 
 ## Examples
 

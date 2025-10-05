@@ -1,9 +1,11 @@
 package ui
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"os"
+	"runtime"
 	"strings"
 
 	"github.com/probeldev/fastlauncher/model"
@@ -154,11 +156,19 @@ func StartUI(apps []model.App) {
 			actualIndex := m.currentPage*m.itemsPerPage + index
 			filtered := m.filterItems(m.input.GetText())
 			if actualIndex < len(filtered) {
-				runner, err := apprunner.GetAppRunner(apprunner.OsLinux)
+
+				osForRunner, err := m.getRunnerOs()
+				if err != nil {
+					log.Println("GetRunnerOs error:", err)
+					return
+				}
+
+				runner, err := apprunner.GetAppRunner(osForRunner)
 				if err != nil {
 					log.Println("GetAppRunner error:", err)
 					return
 				}
+
 				err = runner.Run(filtered[actualIndex].command)
 				if err != nil {
 					log.Println("Run error:", err)
@@ -281,4 +291,16 @@ func StartUI(apps []model.App) {
 		log.Println("Error running program:", err)
 		os.Exit(1)
 	}
+}
+
+func (u *uiModel) getRunnerOs() (string, error) {
+	currentOs := runtime.GOOS
+	switch currentOs {
+	case "darwin":
+		return apprunner.OsMacOs, nil
+	case "linux":
+		return apprunner.OsLinux, nil
+	}
+
+	return "", errors.New("OS is not support")
 }

@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/lithammer/fuzzysearch/fuzzy"
 	"github.com/probeldev/fastlauncher/model"
 	"github.com/probeldev/fastlauncher/pkg/apprunner"
 
@@ -41,32 +42,12 @@ func (m *uiModel) filterItems(query string) []item {
 
 	for _, it := range m.items {
 		title := strings.ToLower(it.title)
-		if fuzzyMatch(title, query) {
+		if fuzzy.Match(query, title) {
 			filtered = append(filtered, it)
 		}
 	}
 
 	return filtered
-}
-
-// fuzzyMatch проверяет, можно ли найти query как подпоследовательность в str
-func fuzzyMatch(str, query string) bool {
-	if query == "" {
-		return true
-	}
-	if str == "" {
-		return false
-	}
-
-	// Ищем первую букву запроса в строке
-	firstChar := query[0]
-	pos := strings.IndexByte(str, firstChar)
-	if pos == -1 {
-		return false
-	}
-
-	// Рекурсивно проверяем оставшуюся часть запроса
-	return fuzzyMatch(str[pos+1:], query[1:])
 }
 
 // updateList обновляет содержимое списка

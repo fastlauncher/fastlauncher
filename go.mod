@@ -4,6 +4,7 @@ go 1.24.3
 
 require (
 	github.com/gdamore/tcell/v2 v2.8.1
+	github.com/lithammer/fuzzysearch v1.1.8
 	github.com/rivo/tview v0.0.0-20250501113434-0c592cd31026
 )
 

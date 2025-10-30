@@ -20,6 +20,13 @@ func FilterItems(items []model.App, query string) []model.App {
 		title := strings.ToLower(it.Title)
 		if fuzzy.Match(query, title) {
 			filtered = append(filtered, it)
+			continue
+		}
+
+		description := strings.ToLower(it.Description)
+		if fuzzy.Match(query, description) {
+			filtered = append(filtered, it)
+			continue
 		}
 	}
 

@@ -1,3 +1,4 @@
+// Package ui...
 package ui
 
 import (
@@ -16,13 +17,8 @@ import (
 	"github.com/rivo/tview"
 )
 
-type item struct {
-	title   string
-	command string
-}
-
 type uiModel struct {
-	items        []item
+	items        []model.App
 	list         *tview.List
 	input        *tview.InputField
 	pages        *tview.TextView
@@ -34,16 +30,16 @@ type uiModel struct {
 }
 
 // filterItems фильтрует элементы по запросу
-func (m *uiModel) filterItems(query string) []item {
+func (m *uiModel) filterItems(query string) []model.App {
 	if query == "" {
 		return m.items
 	}
 
 	query = strings.ToLower(query)
-	var filtered []item
+	var filtered []model.App
 
 	for _, it := range m.items {
-		title := strings.ToLower(it.title)
+		title := strings.ToLower(it.Title)
 		if fuzzy.Match(query, title) {
 			filtered = append(filtered, it)
 		}
@@ -71,7 +67,7 @@ func (m *uiModel) updateList() {
 	end = min(end, totalItems)
 
 	for i := start; i < end; i++ {
-		m.list.AddItem(filtered[i].title, "", 0, nil)
+		m.list.AddItem(filtered[i].Title, "", 0, nil)
 	}
 
 	// Восстанавливаем текущий элемент, если он в пределах нового списка
@@ -111,17 +107,9 @@ func StartUI(apps []model.App) {
 
 	// Создаём модель
 	m := &uiModel{
-		items:       make([]item, len(apps)),
+		items:       apps,
 		currentPage: 0,
 		currentItem: 0,
-	}
-
-	// Заполняем элементы
-	for i, a := range apps {
-		m.items[i] = item{
-			title:   a.Title,
-			command: a.Command,
-		}
 	}
 
 	// Создаём приложение
@@ -150,7 +138,7 @@ func StartUI(apps []model.App) {
 					return
 				}
 
-				err = runner.Run(filtered[actualIndex].command)
+				err = runner.Run(filtered[actualIndex].Command)
 				if err != nil {
 					log.Println("Run error:", err)
 					return

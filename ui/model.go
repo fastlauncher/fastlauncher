@@ -7,9 +7,8 @@ import (
 	"log"
 	"os"
 	"runtime"
-	"strings"
 
-	"github.com/lithammer/fuzzysearch/fuzzy"
+	filteritems "github.com/probeldev/fastlauncher/filterItems"
 	"github.com/probeldev/fastlauncher/model"
 	"github.com/probeldev/fastlauncher/pkg/apprunner"
 
@@ -29,30 +28,14 @@ type uiModel struct {
 	lastHeight   int
 }
 
-// filterItems фильтрует элементы по запросу
-func (m *uiModel) filterItems(query string) []model.App {
-	if query == "" {
-		return m.items
-	}
-
-	query = strings.ToLower(query)
-	var filtered []model.App
-
-	for _, it := range m.items {
-		title := strings.ToLower(it.Title)
-		if fuzzy.Match(query, title) {
-			filtered = append(filtered, it)
-		}
-	}
-
-	return filtered
-}
-
 // updateList обновляет содержимое списка
 func (m *uiModel) updateList() {
 	current := m.list.GetCurrentItem() // Сохраняем текущий элемент
 	m.list.Clear()
-	filtered := m.filterItems(m.input.GetText())
+	filtered := filteritems.FilterItems(
+		m.items,
+		m.input.GetText(),
+	)
 	totalItems := len(filtered)
 	totalPages := (totalItems + m.itemsPerPage - 1) / m.itemsPerPage
 	if m.currentPage >= totalPages {
@@ -123,7 +106,10 @@ func StartUI(apps []model.App) {
 		SetSelectedFunc(func(index int, mainText, secondaryText string, shortcut rune) {
 			// Запускаем команду
 			actualIndex := m.currentPage*m.itemsPerPage + index
-			filtered := m.filterItems(m.input.GetText())
+			filtered := filteritems.FilterItems(
+				m.items,
+				m.input.GetText(),
+			)
 			if actualIndex < len(filtered) {
 
 				osForRunner, err := m.getRunnerOs()
@@ -204,7 +190,10 @@ func StartUI(apps []model.App) {
 			}
 			return nil
 		case tcell.KeyRight:
-			filtered := m.filterItems(m.input.GetText())
+			filtered := filteritems.FilterItems(
+				m.items,
+				m.input.GetText(),
+			)
 			totalPages := (len(filtered) + m.itemsPerPage - 1) / m.itemsPerPage
 			if m.currentPage < totalPages-1 {
 				m.currentPage++

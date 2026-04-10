@@ -251,7 +251,7 @@ func StartUI(apps []model.App) {
 	}
 }
 
-func (u *uiModel) getRunnerOs() (string, error) {
+func (m *uiModel) getRunnerOs() (string, error) {
 	currentOs := runtime.GOOS
 	switch currentOs {
 	case "darwin":

@@ -1,9 +1,9 @@
 package mode
 
 import (
-	"os"
+	"log"
 
-	"github.com/probeldev/fastlauncher/log"
+	flog "github.com/probeldev/fastlauncher/log"
 	"github.com/probeldev/fastlauncher/model"
 )
 
@@ -13,20 +13,16 @@ func (cw *ConfigMode) GetFromFile(cfgPath string) []model.App {
 	fn := "ConfigMode:GetFromFile"
 
 	if cfgPath == "" {
-		log.Println(fn, "cfg path not found")
+		flog.Println(fn, "cfg path not found")
 		return nil
 	}
 
-	file, err := os.ReadFile(cfgPath)
-	if err != nil {
-		log.Println(fn, err)
-		return nil
-	}
+	response, warnings := LoadConfigFile(cfgPath)
 
-	response, err := model.NewAppListFromJSON(file)
-	if err != nil {
-		log.Println(fn, err)
-		return nil
+	// Warnings are not fatal, so the standard logger is used: the project log
+	// package sleeps 15 seconds after every Println and must not delay the UI.
+	for _, warning := range warnings {
+		log.Println(fn, warning)
 	}
 
 	return response

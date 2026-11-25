@@ -1,0 +1,12 @@
+[
+	{
+		"title": "Run Tests",
+		"description": "go test ./...",
+		"command": "echo \"go test ./...\""
+	},
+	{
+		"title": "Build",
+		"description": "go build ./...",
+		"command": "echo \"go build ./...\""
+	}
+]

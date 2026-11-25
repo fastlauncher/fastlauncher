@@ -1,0 +1,29 @@
+[
+	{
+		"title": "Dev",
+		"description": "inline submenu",
+		"command": "ignored because items are set",
+		"items": [
+			{
+				"title": "FastLauncher",
+				"description": "this project",
+				"command": "echo \"open fast-launcher\""
+			},
+			{
+				"title": "Dotfiles",
+				"description": "personal dotfiles",
+				"command": "echo \"open dotfiles\""
+			}
+		]
+	},
+	{
+		"title": "More Dev",
+		"description": "submenu loaded from dev.json",
+		"config": "dev.json"
+	},
+	{
+		"title": "Safari",
+		"description": "open Safari",
+		"command": "open -n /Applications/Safari.app"
+	}
+]

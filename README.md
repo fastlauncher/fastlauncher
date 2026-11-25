@@ -92,4 +92,47 @@ windowrulev2 = size 1000 600,title:(fast-launcher)
 windowrulev2 = center(1), title:(fast-launcher)
 ```
 
+### Nested menus
 
+A config item can open a submenu inside the same launcher window instead of
+starting a new process. Two ways are supported and can be combined:
+
+- `items` — inline nested list of apps;
+- `config` — path to another json config file.
+
+```json
+[
+	{
+		"title": "Dev",
+		"description": "inline submenu",
+		"items": [
+			{ "title": "Project", "description": "my project", "command": "code ." }
+		]
+	},
+	{
+		"title": "More Dev",
+		"description": "submenu loaded from a file",
+		"config": "dev.json"
+	}
+]
+```
+
+Rules:
+
+- Enter on an item with nested `items` opens the submenu, Esc goes back.
+  Enter on a leaf item runs its `command` and closes the launcher.
+- `command` is ignored on items that have nested `items`.
+- Relative `config` paths are resolved against the directory of the config
+  file that declares them (not the current working directory); absolute paths
+  are used as is and `~` is expanded to the home directory.
+- A broken `config` reference (missing file, invalid json, a cycle, more than
+  16 nested `config` files in one branch or more than 1000 expanded config
+  files) is skipped with a warning, the rest of the config still loads. Inline
+  `items` are not limited by the file depth: they only count against normal
+  recursion.
+- An item that ends up with no children and no non-empty `command` is not
+  shown. A broken reference keeps the item when it has inline `items` (as a
+  group with those items) or a non-empty `command` (as a leaf).
+
+Full example: [nested/cfg.json](https://github.com/probeldev/fastlauncher/blob/main/guides/examples/nested/cfg.json)
+with its [dev.json](https://github.com/probeldev/fastlauncher/blob/main/guides/examples/nested/dev.json).

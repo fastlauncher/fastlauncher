@@ -9,6 +9,8 @@ type App struct {
 	Description string `json:"description"`
 	Command     string `json:"command"`
 	Keywords    string `json:"keywords"`
+	Items       []App  `json:"items,omitempty"`  // inline submenu
+	Config      string `json:"config,omitempty"` // reference to another json config
 }
 
 func NewAppListFromJSON(
@@ -24,11 +26,4 @@ func NewAppListFromJSON(
 	}
 
 	return response, nil
-}
-
-func AppListToJSON(apps []App) (
-	[]byte,
-	error,
-) {
-	return json.Marshal(apps)
 }
